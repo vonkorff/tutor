@@ -121,3 +121,8 @@ body {
   position: absolute;
   width: 1px;
 }
+
+.chat-form button:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}

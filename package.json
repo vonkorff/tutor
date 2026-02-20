@@ -1,0 +1,12 @@
+{
+  "name": "chatbot-tutor",
+  "version": "1.0.0",
+  "description": "Simple chatbot tutor wired to OpenAI via a secure server endpoint",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
