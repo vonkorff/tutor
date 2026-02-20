@@ -1,14 +1,7 @@
 const chatLog = document.getElementById("chat-log");
 const chatForm = document.getElementById("chat-form");
 const userInput = document.getElementById("user-input");
-
-const placeholderResponses = [
-  "Great question — this is a prototype response. In the full version, I'd explain the concept step by step.",
-  "Thanks for asking! Placeholder tutor reply: we can break this down into smaller parts together.",
-  "Prototype mode: imagine a detailed answer here with hints and examples tailored to your level.",
-];
-
-let responseIndex = 0;
+const submitButton = chatForm.querySelector("button");
 
 function addMessage(text, sender) {
   const message = document.createElement("article");
@@ -18,9 +11,14 @@ function addMessage(text, sender) {
   chatLog.scrollTop = chatLog.scrollHeight;
 }
 
-addMessage("Hi! I'm your chatbot tutor prototype. Ask me anything to test the UI.", "bot");
+function setLoading(isLoading) {
+  submitButton.disabled = isLoading;
+  submitButton.textContent = isLoading ? "Sending..." : "Send";
+}
 
-chatForm.addEventListener("submit", (event) => {
+addMessage("Hi! I'm your chatbot tutor. Ask me a question to get started.", "bot");
+
+chatForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
   const question = userInput.value.trim();
@@ -30,11 +28,28 @@ chatForm.addEventListener("submit", (event) => {
 
   addMessage(question, "user");
   userInput.value = "";
+  setLoading(true);
 
-  const response = placeholderResponses[responseIndex % placeholderResponses.length];
-  responseIndex += 1;
+  try {
+    const response = await fetch("/api/tutor", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ question }),
+    });
 
-  window.setTimeout(() => {
-    addMessage(response, "bot");
-  }, 300);
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "Something went wrong");
+    }
+
+    addMessage(data.answer, "bot");
+  } catch (error) {
+    addMessage(`Sorry, I couldn't respond right now. ${error.message}`, "bot");
+  } finally {
+    setLoading(false);
+    userInput.focus();
+  }
 });
