@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chatbot Tutor Prototype</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="chat-app" aria-label="Chatbot tutor prototype">
+      <header class="chat-header">
+        <h1>Chatbot Tutor</h1>
+        <p>Prototype UI with placeholder responses</p>
+      </header>
+
+      <section id="chat-log" class="chat-log" aria-live="polite" aria-label="Conversation"></section>
+
+      <form id="chat-form" class="chat-form" autocomplete="off">
+        <label for="user-input" class="visually-hidden">Enter your question</label>
+        <input
+          id="user-input"
+          name="question"
+          type="text"
+          placeholder="Ask a question..."
+          required
+        />
+        <button type="submit">Send</button>
+      </form>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
